@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  uslugi-rest-app:
+    restart: always
+    image: uslugi-rest:1
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /data/uslugirest-app
+    ports:
+      - '9081:9081'
+    expose:
+      - '9081'
+#todo sprawdzic czy dzialaja volumy na bazie
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'angularspringdb'
+      MYSQL_USER: 'springangular'
+      MYSQL_PASSWORD: 'springangular'
+      MYSQL_ROOT_PASSWORD: 'password'
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+volumes:
+  db-data:
