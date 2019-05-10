@@ -1,12 +1,12 @@
-#FROM alpine/git
-#WORKDIR /app
-#RUN git clone https://github.com/spring-projects/spring-petclinic.git
+FROM alpine/git AS git
+WORKDIR /home/aplikacja
+RUN git clone https://github.com/LED1990/uslugiRest.git
 
-#todo jak zrobic jedego mavena dla wszystkich kontenerow
+
 FROM maven:3.6.0-jdk-8-slim AS build
 WORKDIR /home/aplikacja
-COPY src /home/aplikacja/src
-COPY pom.xml /home/aplikacja
+COPY --from=git /home/aplikacja/uslugiRest/src /home/aplikacja/src
+COPY --from=git /home/aplikacja/uslugiRest/pom.xml /home/aplikacja
 RUN mvn -f /home/aplikacja/pom.xml clean install
 
 FROM openjdk:8-jre-alpine
